@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <link type="images/iconesite.png" sizes="16x16" rel="icon" href="images/iconesite.png">
+  <title>JardimCotoncio</title>
+  <style>
+    /* Estilos para a animação do fundo */
+    body {
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
+
+    .landscape {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url(images/iniciolofi.gif);
+      background-repeat: repeat;
+      background-size: cover;
+      animation: landscapeScroll 10s linear infinite;
+    }
+
+    @keyframes landscapeScroll {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: -1920px 0;
+      }
+    }
+
+    /* Estilos para a mensagem de boas-vindas */
+    .message-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: transparent;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+      font-family: 'Press Start 2P', Arial, sans-serif;
+      font-size: 24px;
+      text-shadow: 2px 2px #022c01;
+      animation: fadeIn 1s;
+    }
+
+    /* Estilos para o botão de tema de jogo */
+    .theme-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #024602;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', Arial, sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    
+    /* Estilos para o botão "Ir para o conteúdo" */
+    .content-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #02440b;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', Arial, sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+      animation: minecraftButton 0.5s alternate infinite;
+    }
+    
+    @keyframes minecraftButton {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(0, 10px);
+      }
+    }
+    
+    /* Estilos para a animação de letras se construindo */
+    .animate-text {
+      display: inline-block;
+      overflow: hidden;
+      animation: typeWriter 2s steps(20) 1s 1 normal both;
+    }
+    
+    @keyframes typeWriter {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+    
+    /* Estilos para o texto "AGRINHO2023" */
+    .game-text {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: #07cc07;
+      font-family: 'Press Start 2P', Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 4px;
+      animation: minecraftText 0.5s alternate infinite;
+    }
+
+    .game-textt {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: #ffffff;
+      font-family: 'Press Start 2P', Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 4px;
+      animation: minecraftText 0.5s alternate infinite;
+    }
+    .game-text {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: #ffffff;
+      font-family: 'Press Start 2P', Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 4px;
+      animation: minecraftText 0.5s alternate infinite;
+    }
+
+    @keyframes minecraftText {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(0, 10px);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+</head>
+<body>
+  <div class="landscape"></div>
+  <div class="message-box">
+    <h1><span class="animate-text">Bem-vindo(a) ao Site!</span></h1>
+    <p><span class="animate-text">Aproveite sua visita.</span></p>
+  </div>
+
+  <audio id="backgroundMusic" src="musicas/musicaagrinho.mp3" loop autoplay></audio>
+
+  <button class="theme-button" onclick="toggleMusic()">Musica</button>
+  <button class="content-button" onclick="redirectToContent()">Continuar</button>
+  
+  <script>
+    var backgroundMusic = document.getElementById('backgroundMusic');
+    var messageBox = document.querySelector('.message-box');
+    var themeButton = document.querySelector('.theme-button');
+
+    function stopAnimation() {
+      var landscape = document.querySelector('.landscape');
+      landscape.style.animation = 'none';
+      hideMessageBox();
+    }
+
+    function hideMessageBox() {
+      messageBox.style.display = 'none';
+    }
+
+    function redirectToContent() {
+      window.location.href = 'perguntas.html'; // Substitua 'conteudo.html' pelo caminho correto para o conteúdo do seu site
+    }
+    
+    function toggleMusic() {
+      if (backgroundMusic.paused) {
+        backgroundMusic.play();
+      } else {
+        backgroundMusic.pause();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      messageBox.addEventListener('animationend', function() {
+        backgroundMusic.play();
+      });
+    });
+  </script>
+  <div class="game-text">AGRINHO2023</div>
+  <div class="game-textt">By-Gabriel-Garcia</div>
+  
+</body>
+</html>

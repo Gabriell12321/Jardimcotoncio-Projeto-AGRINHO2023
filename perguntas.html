@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JardimCotoncio</title>
+  <link type="images/iconesite.png" sizes="16x16" rel="icon" href="images/iconesite.png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    #animation-container {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      background-image: url('images/iniciolofi.gif');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .intro-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #ffffff;
+      animation: fade-in 1s forwards;
+    }
+
+    .intro-text {
+      font-size: 36px;
+      margin-bottom: 20px;
+      animation: bounce-in 1s;
+    }
+
+    .intro-details {
+      font-size: 18px;
+      margin-bottom: 10px;
+      animation: slide-in 1s;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes bounce-in {
+      from {
+        transform: scale(0.5);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slide-in {
+      from {
+        transform: translateX(-200px);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    .question-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .question-text {
+      font-size: 24px;
+      margin-bottom: 20px;
+      animation: slide-up 1s;
+    }
+
+    .answer-options {
+      display: flex;
+      justify-content: center;
+      animation: slide-up 1s;
+    }
+
+    .answer-option {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 18px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .answer-option:hover {
+      background-color: #45a049;
+      transform: scale(1.1);
+    }
+
+      /* Estilo para o botão skip */
+  .skip-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #134b03;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    z-index: 1000;
+    animation: fade-in 1s;
+  }
+
+  /* Animação para o botão skip */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link type="images/iconesite.png" sizes="16x16" rel="icon" href="images/iconesite.png">
+</head>
+<body>
+ 
+  <div id="animation-container"></div>
+    <!-- Botão Skip -->
+    <div id="skip-button" class="skip-button" onclick="skipQuestions()">SKIP</div>
+
+    <div id="animation-container"></div>
+
+  <!-- Áudio para tocar ao selecionar uma pergunta -->
+  <audio id="questionSound" src="musicas/plin.mp3"></audio>
+
+  <script>
+    // Array de perguntas e respostas
+    const questions = [
+  // Perguntas sobre preferências pessoais em relação às plantas
+  {
+    question: 'Qual é a sua planta favorita?',
+    options: ['Rosa', 'Lírio', 'Suculenta', 'Orquídea', 'Outra']
+  },
+  {
+    question: 'Você prefere plantas de interior ou de exterior?',
+    options: ['Plantas de interior', 'Plantas de exterior', 'Ambos']
+  },
+  {
+    question: 'Você gosta de cultivar suas próprias ervas e temperos?',
+    options: ['Sim, adoro cultivar minhas ervas', 'Não, prefiro comprar prontas']
+  },
+  {
+    question: 'Qual é a cor de flor que você mais gosta?',
+    options: ['Vermelho', 'Azul', 'Amarelo', 'Branco', 'Outra']
+  },
+
+  // Perguntas sobre experiências com jardinagem
+  {
+    question: 'Você já teve uma horta em casa?',
+    options: ['Sim, já tive', 'Não, nunca tive']
+  },
+  {
+    question: 'Qual é a sua maior conquista na jardinagem?',
+    options: ['Cultivar uma planta rara', 'Fazer uma planta florescer pela primeira vez', 'Outra']
+  },
+  {
+    question: 'Você costuma presentear pessoas com plantas?',
+    options: ['Sim, gosto de presentear com plantas', 'Não, prefiro outros presentes']
+  },
+
+  // Perguntas sobre cuidados com as plantas
+  {
+    question: 'Qual é o maior desafio que você enfrenta ao cuidar das suas plantas?',
+    options: ['Regar na medida certa', 'Controlar pragas e doenças', 'Propagar as plantas', 'Outro']
+  },
+  {
+    question: 'Você prefere utilizar fertilizantes orgânicos ou químicos em suas plantas?',
+    options: ['Fertilizantes orgânicos', 'Fertilizantes químicos', 'Ambos']
+  },
+  {
+    question: 'Como você se sente quando suas plantas florescem ou dão frutos?',
+    options: ['Feliz e orgulhoso', 'Motivado a cuidar melhor das plantas', 'Outro']
+  }
+  // Adicione mais perguntas aqui
+];
+
+    // Variáveis para controle
+    let currentQuestion = 0;
+    const animationContainer = document.getElementById('animation-container');
+
+    // Função para exibir a frase inicial
+    function showIntro() {
+      const introContainer = document.createElement('div');
+      introContainer.className = 'intro-container';
+
+      const introText = document.createElement('div');
+      introText.className = 'intro-text';
+      introText.textContent = 'VAMOS CONHECER MAIS SOBRE VOCÊ?';
+
+      const introDetails = document.createElement('div');
+      introDetails.className = 'intro-details';
+      introDetails.textContent = 'Responda algumas perguntas sobre plantas';
+
+      
+
+      introContainer.appendChild(introText);
+      introContainer.appendChild(introDetails);
+
+      animationContainer.innerHTML = '';
+      animationContainer.appendChild(introContainer);
+
+      setTimeout(() => {
+        showNextQuestion();
+      }, 3000); // Tempo de espera antes de mostrar as perguntas (em milissegundos)
+    }
+
+    // Função para exibir a próxima pergunta
+    function showNextQuestion() {
+      if (currentQuestion >= questions.length) {
+        // Todas as perguntas foram respondidas
+        // Redirecionar para o arquivo "conteudo.html"
+        window.location.href = 'conteudo.html';
+        return;
+      }
+
+      const question = questions[currentQuestion];
+      const questionContainer = document.createElement('div');
+      questionContainer.className = 'question-container';
+
+      const questionText = document.createElement('div');
+      questionText.className = 'question-text';
+      questionText.textContent = question.question;
+
+      const answerOptions = document.createElement('div');
+      answerOptions.className = 'answer-options';
+
+      question.options.forEach(option => {
+        const answerOption = document.createElement('button');
+        answerOption.className = 'answer-option';
+        answerOption.textContent = option;
+        answerOption.addEventListener('click', () => handleAnswer(option));
+        answerOptions.appendChild(answerOption);
+      });
+
+      questionContainer.appendChild(questionText);
+      questionContainer.appendChild(answerOptions);
+
+      animationContainer.innerHTML = '';
+      animationContainer.appendChild(questionContainer);
+
+
+      const questionSound = document.getElementById('questionSound');
+      questionSound.play();
+    }
+
+
+    function handleAnswer(answer) {
+      
+      currentQuestion++;
+      showNextQuestion();
+    }
+
+    showIntro();
+
+    // Função para pular para a próxima página
+  function skipQuestions() {
+    window.location.href = 'conteudo.html';
+  }
+  </script>
+</body>
+</html>
